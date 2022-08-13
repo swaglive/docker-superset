@@ -1,20 +1,19 @@
-ARG         base=alpine
-
-###
-
-FROM        ${base} as build
-
-ARG         version=
-ARG         repo=
-
-RUN         apk add --no-cache --virtual .build-deps \
-                build-base && \
-            wget -O - https://github.com/${repo}/archive/refs/tags/v${version}.tar.gz | tar xz
+ARG         version=latest
+ARG         base=apache/superset:${version}
 
 ###
 
 FROM        ${base}
 
-COPY        --from=build /usr/local/bin /usr/local/bin
-COPY        --from=build /usr/local/include /usr/local/include
-COPY        --from=build /usr/local/lib /usr/local/lib
+USER        root
+
+RUN         pip install -v \
+                mysqlclient \
+                sqlalchemy-redshift \
+                sqlalchemy-databricks \
+                pybigquery \
+                clickhouse-driver==0.2.0 \
+                clickhouse-sqlalchemy==0.1.6 \
+                databricks-sql-connector \
+
+USER        superset
