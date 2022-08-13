@@ -14,6 +14,6 @@ RUN         pip install -v \
                 pybigquery \
                 clickhouse-driver==0.2.0 \
                 clickhouse-sqlalchemy==0.1.6 \
-                databricks-sql-connector \
+                databricks-sql-connector
 
 USER        superset
